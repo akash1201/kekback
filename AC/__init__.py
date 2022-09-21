@@ -4,7 +4,7 @@ from os import path
 
 db = SQLAlchemy()
 
-DB_NAME = 'data.db'
+DB_NAME = 'AC.db'
 
 
 def create_app():
@@ -18,19 +18,19 @@ def create_app():
     # init db End
 
     # import all routes
-    from .views import views
-    from .auth import auth
+    from .routes.views import views
+    from .routes.auth import auth
     # url_prefix can add a prefix to the url
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
 
-    from . import models 
-    create_database(app);
-    
+    create_database(app)
+    from .database.models import Field, Device
+
     return app
 
 
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    if not path.exists('AC/' + DB_NAME):
         db.create_all(app=app)
         print('NEW Database Created')

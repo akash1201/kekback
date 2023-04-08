@@ -1,13 +1,14 @@
 from urllib import request
 from flask import Blueprint
 
+from AC.database.models import Users
+
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/users', methods=['GET', 'POST'])
 def home():
-    if (request.method =='POST'):
-        temp = request.form.get('key')
-    bodyData = request.form
-    print(bodyData)
-    return '<h1>Test</h1>'
+    items = Users.query.all()
+    print(items)
+    # return {'items': [{'id': item.id, 'name': item.name, 'description': item.description} for item in items]}
+    return items

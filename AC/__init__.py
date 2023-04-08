@@ -25,7 +25,7 @@ def create_app():
     app.register_blueprint(auth,url_prefix='/')
 
     create_database(app)
-    from .database.models import Field, Device
+    from .database.models import Users
 
     return app
 

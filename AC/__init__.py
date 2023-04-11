@@ -13,7 +13,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
 
     # init db Start
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+DB_NAME
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://admin:letmein123@cl2yr0yt9ms9/AC-dev'
     db.init_app(app)
     # init db End
 

@@ -13,7 +13,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
 
     # init db Start
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+pymysql://superuser:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ac-dev'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://superuser:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ac-dev'
     db.init_app(app)
     # init db End
 

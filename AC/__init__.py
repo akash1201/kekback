@@ -13,7 +13,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
 
     # init db Start
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@awseb-e-ahubpr8nyb-stack-awsebrdsdatabase-0aqjiy5ak3jo.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/awseb-e-ahubpr8nyb-stack-awsebrdsdatabase-0aqjiy5ak3jo'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@awseb-e-ahubpr8nyb-stack-awsebrdsdatabase-0aqjiy5ak3jo.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ebdb'
     db.init_app(app)
     # init db End
 

@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 
@@ -15,6 +16,7 @@ def create_app():
     # init db Start
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@awseb-e-ahubpr8nyb-stack-awsebrdsdatabase-0aqjiy5ak3jo.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ebdb'
     db.init_app(app)
+    migrate = Migrate(app, db)
     # init db End
 
     # import all routes

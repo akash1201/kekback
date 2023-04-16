@@ -19,6 +19,6 @@ class Weapons(db.Model):
     action = db.Column(db.String(20), nullable=False)
     ammo = db.Column(db.String(20))
     modelUrl = db.Column(db.String(200))
-    image = db.Column(db.BYTEA)
+    image = db.Column(db.LargeBinary)
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

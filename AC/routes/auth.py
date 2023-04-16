@@ -14,6 +14,10 @@ def home():
     return jsonify(tems=items)
 
 
+
+
+
+
 @auth.route('/weapons', methods=['GET'])
 def getWeapons():
         items = Weapons.query.all()
@@ -33,7 +37,8 @@ def newWeapon():
         subType=request.json.get('subType'),
         action=request.json.get('action'),
         ammo=request.json.get('ammo'),
-        url=request.json.get('url'),
+        modelUrl=request.json.get('modelUrl'),
+        image=request.json.get('image'),
     )
     db.session.add(book) 
     db.session.commit()

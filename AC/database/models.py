@@ -18,6 +18,7 @@ class Weapons(db.Model):
     subType = db.Column(db.String(20), nullable=False)
     action = db.Column(db.String(20), nullable=False)
     ammo = db.Column(db.String(20))
-    url = db.Column(db.String(200))
+    modelUrl = db.Column(db.String(200))
+    image = db.Column(db.BYTEA)
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

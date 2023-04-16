@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_migrate import Migrate
 
+from flask_cors import CORS
+
 db = SQLAlchemy()
 
 DB_NAME = 'AC.db'
@@ -16,6 +18,7 @@ def create_app():
     # init db Start
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///AC.db' # 'postgresql://root:letmein123@awseb-e-ahubpr8nyb-stack-awsebrdsdatabase-0aqjiy5ak3jo.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ebdb'
     db.init_app(app)
+    CORS(app)
     migrate = Migrate(app, db)
     # init db End
 

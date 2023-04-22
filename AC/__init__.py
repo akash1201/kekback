@@ -17,7 +17,7 @@ def create_app():
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
 
     # init db 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/ac-dev'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
     db.init_app(app)
     migrate.init_app(app,db)
     

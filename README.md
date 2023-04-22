@@ -8,3 +8,4 @@
 
 <!-- https://stackoverflow.com/questions/66627441/error-could-not-locate-a-flask-application -->
 .flask env is there because we have application.py instead of app.py because its easier for deployment above like give more details
+.db.py is there so db can be exported to the models and other places

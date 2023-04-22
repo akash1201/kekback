@@ -33,6 +33,7 @@ def newWeapon():
         abort(400)
     book = Weapons(
         name=request.json.get('name'),
+        category=request.json.get('category'),
         type=request.json.get('type'),
         subType=request.json.get('subType'),
         action=request.json.get('action'),

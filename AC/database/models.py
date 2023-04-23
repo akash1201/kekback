@@ -25,7 +25,6 @@ class Weapons(db.Model):
     action = db.Column(db.String(20), nullable=False)
     ammo = db.Column(db.String(20))
     modelUrl = db.Column(db.String(20))
-    image = db.Column(db.String(20)) #db.Column(db.LargeBinary)
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
 
     def as_dict(self):

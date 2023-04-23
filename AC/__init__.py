@@ -24,18 +24,12 @@ def create_app():
     #CORS
     CORS(app)
 
-    #check if this is used
-    
-    
-
     # import all routes
     from .routes.views import views
     from .routes.auth import auth
     # url_prefix can add a prefix to the url
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
-
-
 
     create_database(app)
 
@@ -44,6 +38,6 @@ def create_app():
 
 def create_database(app):
     # if not path.exists('AC/' + DB_NAME):
-    with app.app_context():
-        db.create_all(app=app)
+    # with app.app_context():
+    db.create_all(app=app)
     print('NEW Database Created')

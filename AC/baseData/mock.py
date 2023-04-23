@@ -6,8 +6,7 @@ guns = [
         'subType':'AR',#AR, AK, pump, leaver, pistol,revolver
         'action':'auto', #semi, auto, bolt, break, muzzle leading
         'ammo':"5.56",
-        'modelUrl':'ar-assault',
-        'image':'ar-assault'
+        'modelUrl':'ar-assault'
     },
     {
         'name': 'AK-47',
@@ -16,8 +15,7 @@ guns = [
         'subType': 'AR',
         'action': 'auto',
         'ammo': '5.56',
-        'modelUrl': 'ak-assault',
-        'image': 'ak-assault'
+        'modelUrl': 'ak-assault'
     },
     {
         'name': 'AUG',
@@ -26,8 +24,7 @@ guns = [
         'subType': 'AUG',
         'action': 'auto', # semi, auto, bolt, break, muzzle leading
         'ammo': '5.56',
-        'modelUrl': 'aug-assault',
-        'image': 'aug-assault'
+        'modelUrl': 'aug-assault'
     },
     {
         'name': 'QBZ',
@@ -36,8 +33,7 @@ guns = [
         'subType': 'AR',
         'action': 'auto',
         'ammo': '5.56',
-        'modelUrl': 'qbz-assault',
-        'image': 'qbz-assault'
+        'modelUrl': 'qbz-assault'
     },
     {
         'name': '1911',
@@ -46,8 +42,7 @@ guns = [
         'subType': '1911',
         'action': 'semi',
         'ammo': '9mm',
-        'modelUrl': '1911-pistol',
-        'image': '1911-pistol'
+        'modelUrl': '1911-pistol'
     },
     {
         'name': 'Glock-18',
@@ -56,8 +51,7 @@ guns = [
         'subType': 'glock',
         'action': 'semi',
         'ammo': '9mm',
-        'modelUrl': 'glock-pistol',
-        'image': 'glock-pistol'
+        'modelUrl': 'glock-pistol'
     },
     {
         "name": "QBZ",
@@ -66,8 +60,7 @@ guns = [
         "subType": "AR",
         "action": "auto",
         "ammo": "5.56",
-        "modelUrl": "qbz-assault",
-        "image": "qbz-assault"
+        "modelUrl": "qbz-assault"
     },
     {
         "name": "1911",
@@ -76,8 +69,7 @@ guns = [
         "subType": "1911",
         "action": "semi",
         "ammo": "9mm",
-        "modelUrl": "1911-pistol",
-        "image": "1911-pistol"
+        "modelUrl": "1911-pistol"
     },
     {
         "name": "Glock-18",
@@ -86,8 +78,7 @@ guns = [
         "subType": "glock",
         "action": "semi",
         "ammo": "9mm",
-        "modelUrl": "glock-pistol",
-        "image": "glock-pistol"
+        "modelUrl": "glock-pistol"
     },
     {
         "name": "revolver 1",
@@ -96,8 +87,7 @@ guns = [
         "subType": "revolver",
         "action": "semi",
         "ammo": "9mm",
-        "modelUrl": "revolver-pistol",
-        "image": "revolver-pistol"
+        "modelUrl": "revolver-pistol"
     },
     {
         "name": "mac 10",
@@ -106,8 +96,7 @@ guns = [
         "subType": "mac",
         "action": "auto",
         "ammo": "9mm",
-        "modelUrl": "mac10-smg",
-        "image": "mac10-smg"
+        "modelUrl": "mac10-smg"
     },
     {
         "name": "mp 7",
@@ -116,8 +105,7 @@ guns = [
         "subType": "mac",
         "action": "auto",
         "ammo": "9mm",
-        "modelUrl": "mp7-smg",
-        "image": "mp7-smg"
+        "modelUrl": "mp7-smg"
     },
     {
       "name":"QBZ",
@@ -126,8 +114,7 @@ guns = [
       "subType":"AR",
       "action":"auto",
       "ammo":"5.56",
-      "modelUrl":"qbz-assault",
-      "image":"qbz-assault"
+      "modelUrl":"qbz-assault"
    },
    {
       "name":"1911",
@@ -136,8 +123,7 @@ guns = [
       "subType":"1911",
       "action":"semi",
       "ammo":"9mm",
-      "modelUrl":"1911-pistol",
-      "image":"1911-pistol"
+      "modelUrl":"1911-pistol"
    },
    {
       "name":"Glock-18",
@@ -146,8 +132,7 @@ guns = [
       "subType":"glock",
       "action":"semi",
       "ammo":"9mm",
-      "modelUrl":"glock-pistol",
-      "image":"glock-pistol"
+      "modelUrl":"glock-pistol"
    },
    {
       "name":"revolver 1",
@@ -156,8 +141,7 @@ guns = [
       "subType":"revolver",
       "action":"semi",
       "ammo":"9mm",
-      "modelUrl":"revolver-pistol",
-      "image":"revolver-pistol"
+      "modelUrl":"revolver-pistol"
    },
    {
       "name":"mac 10",
@@ -166,8 +150,7 @@ guns = [
       "subType":"mac",
       "action":"auto",
       "ammo":"9mm",
-      "modelUrl":"mac10-smg",
-      "image":"mac10-smg"
+      "modelUrl":"mac10-smg"
    },
    {
       "name":"mp 7",
@@ -176,8 +159,7 @@ guns = [
       "subType":"mac",
       "action":"auto",
       "ammo":"9mm",
-      "modelUrl":"mp7-smg",
-      "image":"mp7-smg"
+      "modelUrl":"mp7-smg"
    },
    {
       "name":"remington",
@@ -186,8 +168,7 @@ guns = [
       "subType":"mac",
       "action":"pump",
       "ammo":"40mm",
-      "modelUrl":"pump-shotgun",
-      "image":"pump-shotgun"
+      "modelUrl":"pump-shotgun"
    },
    {
       "name":"old school",
@@ -196,8 +177,7 @@ guns = [
       "subType":"leaver type",
       "action":"leaver",
       "ammo":"40mm",
-      "modelUrl":"leaver-shotgun",
-      "image":"leaver-shotgun"
+      "modelUrl":"leaver-shotgun"
    },
    {
       "name":"kar98",
@@ -206,8 +186,7 @@ guns = [
       "subType":"kar",
       "action":"bolt",
       "ammo":"50cal",
-      "modelUrl":"usr-sniper",
-      "image":"usr-sniper"
+      "modelUrl":"usr-sniper"
    },
    {
       "name":"pellington",
@@ -216,7 +195,6 @@ guns = [
       "subType":"pellington",
       "action":"bolt",
       "ammo":"30cal",
-      "modelUrl":"pellington-sniper",
-      "image":"pellington-sniper"
+      "modelUrl":"pellington-sniper"
    }
 ]

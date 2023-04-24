@@ -3,8 +3,12 @@ from os import path
 from flask_migrate import Migrate
 import json
 from flask_cors import CORS
+
+from sqlalchemy.dialects.postgresql import insert
+from AC.database.models import Weapons
 from .db import db
 
+from .baseData.mock import guns
 
 migrate = Migrate()
 
@@ -33,12 +37,17 @@ def create_app():
 
     create_database(app)
 
+
+    db.session.execute(insert(Weapons)
+                .values(guns)
+                .on_conflict_do_nothing())
+    db.session.commit()
+
+
     return app
 
 
 def create_database(app):
-    # if not path.exists('AC/' + DB_NAME):
-    # with app.app_context():
     app.app_context().push()
     db.create_all(app=app)
     print('NEW Database Created')

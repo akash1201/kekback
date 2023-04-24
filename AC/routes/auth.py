@@ -1,7 +1,7 @@
 from urllib import request
 from flask import Blueprint
 from flask import jsonify, request, abort, make_response
-from AC.database.models import Users, Weapons
+from AC.database.models import Tacticals, Users, Weapons
 from .. import db
 import json
 auth = Blueprint('auth', __name__)
@@ -45,3 +45,12 @@ def newWeapon():
     return jsonify(book.as_dict()), 201
     
 
+
+@auth.route('/tacticals', methods=['GET'])
+def getTacticals():
+        items = Tacticals.query.all()
+        print(items)
+        tacticals = []
+        for item in items:
+            tacticals.append(item.as_dict())
+        return jsonify(tacticals)

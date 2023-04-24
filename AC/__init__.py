@@ -38,10 +38,10 @@ def create_app():
     create_database(app)
 
 
-    db.session.execute(insert(Weapons)
-                .values(guns)
-                .on_conflict_do_nothing())
-    db.session.commit()
+    # db.session.execute(insert(Weapons)
+    #             .values(guns)
+    #             .on_conflict_do_nothing())
+    # db.session.commit()
 
 
     return app

@@ -24,7 +24,7 @@ class Weapons(db.Model):
     subType = db.Column(db.String(20), nullable=False)
     action = db.Column(db.String(20), nullable=False)
     ammo = db.Column(db.String(20))
-    modelUrl = db.Column(db.String(20))
+    modelUrl = db.Column(db.String(50))
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
 
     def as_dict(self):

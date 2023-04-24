@@ -38,8 +38,7 @@ def newWeapon():
         subType=request.json.get('subType'),
         action=request.json.get('action'),
         ammo=request.json.get('ammo'),
-        modelUrl=request.json.get('modelUrl'),
-        image=request.json.get('image'),
+        modelUrl=request.json.get('modelUrl')
     )
     db.session.add(book) 
     db.session.commit()

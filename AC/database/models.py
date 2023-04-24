@@ -18,7 +18,7 @@ class Users(db.Model):
 
 class Weapons(db.Model):
     id = db.Column(db.Integer, Identity(start=1),primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     category = db.Column(db.String(20), nullable=False)
     type = db.Column(db.String(20), nullable=False)
     subType = db.Column(db.String(20), nullable=False)

@@ -227,7 +227,7 @@ guns = [
       "subType":"rusian sniper",
       "action":"bolt",
       "ammo":"30cal",
-      "modelUrl":"Dragunov_Mobile (1).glb"
+      "modelUrl":"Dragunov_Mobile (1)"
     },
     {
       "id": 24,

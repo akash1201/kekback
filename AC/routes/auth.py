@@ -4,14 +4,15 @@ from flask import request, jsonify, make_response, url_for, redirect, abort
 from AC.database.models import Attachments, Tacticals, User, WeaponAttachment, Weapons
 from .. import db
 import json
+from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    user = User(name=data['name'], email=data['email'])
-    user.set_password(data['password'])
+    password_hash = generate_password_hash(data['password'])
+    user = User(name=data['name'], email=data['email'], password=password_hash)
     db.session.add(user)
     db.session.commit()
     token = user.encode_token()
@@ -21,20 +22,24 @@ def register():
     }
     return jsonify(response), 201
 
+
 @auth.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
+    print(data)
     user = User.query.filter_by(email=data['email']).first()
-    if user and user.check_password(data['password']):
+    if user and  check_password_hash(user.password_hash, data['password']):
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully',
-            'token': token.decode('UTF-8')
+            'token': token
         }
         return jsonify(response), 200
     else:
         response = {'message': 'Invalid email or password'}
         return jsonify(response), 401
+    
+
 
 @auth.route('/auth/facebook', methods=['POST'])
 def facebook_login():

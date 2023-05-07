@@ -3,7 +3,7 @@ from ..db import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 from sqlalchemy import Identity, DateTime
-from datetime import datetime 
+from datetime import datetime, timedelta
 import json
 from sqlalchemy import event
 from sqlalchemy.dialects.postgresql import JSONB
@@ -29,25 +29,29 @@ class User(db.Model):
         self.email = email
         self.password_hash = generate_password_hash(password)
 
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+        
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
     def encode_token(self):
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
-            'iat': datetime.datetime.utcnow(),
+            'exp': datetime.utcnow() + timedelta(days=1),
+            'iat': datetime.utcnow(),
             'sub': self.id
         }
-        return jwt.encode(
+        key = jwt.encode(
             payload,
-            app.config.get('SECRET_KEY'),
+            "MY_ENCODE_KEY", #need to make this secure
             algorithm='HS256'
-        ).decode('utf-8')
+        ) 
+        return key
 
     @staticmethod
     def decode_token(token):
         try:
-            payload = jwt.decode(token, app.config.get('SECRET_KEY'))
+            payload = jwt.decode(token, "MY_ENCODE_KEY")
             return payload['sub']
         except jwt.ExpiredSignatureError:
             return 'Token expired. Please log in again.'

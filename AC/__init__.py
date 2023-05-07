@@ -32,9 +32,13 @@ def create_app():
     # import all routes
     from .routes.views import views
     from .routes.auth import auth
+    from .routes.weapons import weapons
+    from .routes.tacticals import tacticals
     # url_prefix can add a prefix to the url
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
+    app.register_blueprint(weapons,url_prefix='/')
+    app.register_blueprint(tacticals,url_prefix='/')
 
     create_database(app)
 

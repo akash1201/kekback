@@ -7,13 +7,58 @@ from datetime import datetime
 import json
 from sqlalchemy import event
 from sqlalchemy.dialects.postgresql import JSONB
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
 
-class Users(db.Model):
-    id = db.Column(db.Integer, Identity(start=1), primary_key=True)
+
+
+# User Model
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    facebook_id = db.Column(db.String(50), unique=True)
+    google_id = db.Column(db.String(50), unique=True)
+
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def encode_token(self):
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+            'iat': datetime.datetime.utcnow(),
+            'sub': self.id
+        }
+        return jwt.encode(
+            payload,
+            app.config.get('SECRET_KEY'),
+            algorithm='HS256'
+        ).decode('utf-8')
+
+    @staticmethod
+    def decode_token(token):
+        try:
+            payload = jwt.decode(token, app.config.get('SECRET_KEY'))
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Token expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
     
     def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    
+
+
 
 
 class Attachments(db.Model):

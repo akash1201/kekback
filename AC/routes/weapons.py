@@ -2,9 +2,9 @@ from urllib import request
 from flask import Blueprint
 from flask import jsonify, request, abort, make_response
 from AC.database.models import Attachments, WeaponAttachment, Weapons
+from AC.routes.auth import token_required
 from .. import db
 weapons = Blueprint('weapons', __name__)
-
 
 @weapons.route('/weapons', methods=['GET'])
 def getWeapons():
@@ -54,8 +54,8 @@ def getAttachmentsForWeaponById(id):
         return jsonify([])
     return jsonify(results)
 
-
 @weapons.route('/weapon', methods=['POST'])
+@token_required
 def newWeapon():
     if not request.json:
         abort(400)
@@ -71,9 +71,10 @@ def newWeapon():
     db.session.add(book) 
     db.session.commit()
     return jsonify(book.as_dict()), 201
-    
+
 
 @weapons.route('/weapon/<int:weapon_id>', methods=['DELETE'])
+@token_required
 def removeWeapon(weapon_id):
     weapon = Weapons.query.get(weapon_id)
 

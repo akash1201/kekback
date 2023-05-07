@@ -3,9 +3,38 @@ from flask import Blueprint
 from flask import request, jsonify, make_response, url_for, redirect, abort
 from AC.database.models import Attachments, Tacticals, User, WeaponAttachment, Weapons
 from .. import db
+from functools import wraps
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
 auth = Blueprint('auth', __name__)
+
+# Decorator to check if user is logged in
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        print(" we got here")
+        # Check if Authorization header is present and extract token from it
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split(' ')[1]
+
+        # Return 401 error if token is missing
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 401
+
+        try:
+            # Decode token and get user ID
+            data = jwt.decode(token, "MY_ENCODE_KEY", algorithms=['HS256'])
+            current_user = User.query.get(data['id'])
+        except:
+            # Return 401 error if token is invalid
+            return jsonify({'message': 'Token is invalid'}), 401
+
+        # Call the route function with the current user as an argument
+        return f(current_user, *args, **kwargs)
+
+    return decorated
 
 
 @auth.route('/register', methods=['POST'])

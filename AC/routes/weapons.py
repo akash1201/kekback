@@ -1,7 +1,7 @@
 from urllib import request
 from flask import Blueprint
 from flask import jsonify, request, abort, make_response
-from AC.database.models import Attachments, WeaponAttachment, Weapons
+from AC.database.models import Attachments, Users, UserWeapon, WeaponAttachment, Weapons
 from AC.routes.auth import token_required
 from .. import db
 weapons = Blueprint('weapons', __name__)
@@ -86,5 +86,3 @@ def removeWeapon(weapon_id):
     db.session.commit()
 
     return jsonify({'message': f'weapon with id {weapon_id} and associated weapon attachments have been deleted'})
-
-

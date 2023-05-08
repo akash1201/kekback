@@ -22,7 +22,7 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] =  'postgresql://root:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
+    app.config['SQLALCHEMY_DATABASE_URI'] =  'postgresql://postgres:ranju12@localhost/postgres' #'postgresql://root:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
     db.init_app(app)
     migrate.init_app(app,db)
     
@@ -34,11 +34,13 @@ def create_app():
     from .routes.auth import auth
     from .routes.weapons import weapons
     from .routes.tacticals import tacticals
+    from .routes.users import users
     # url_prefix can add a prefix to the url
     app.register_blueprint(views,url_prefix='/')
     app.register_blueprint(auth,url_prefix='/')
     app.register_blueprint(weapons,url_prefix='/')
     app.register_blueprint(tacticals,url_prefix='/')
+    app.register_blueprint(users,url_prefix='/')
 
     create_database(app)
 

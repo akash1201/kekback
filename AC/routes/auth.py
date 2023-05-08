@@ -1,7 +1,7 @@
 from urllib import request
 from flask import Blueprint
 from flask import request, jsonify, make_response, url_for, redirect, abort
-from AC.database.models import Attachments, Tacticals, User, WeaponAttachment, Weapons
+from AC.database.models import Attachments, Tacticals, Users, WeaponAttachment, Weapons
 from .. import db
 from functools import wraps
 import json
@@ -26,7 +26,7 @@ def token_required(f):
         try:
             # Decode token and get user ID
             data = jwt.decode(token, "MY_ENCODE_KEY", algorithms=['HS256'])
-            current_user = User.query.get(data['id'])
+            current_user = Users.query.get(data['id'])
         except:
             # Return 401 error if token is invalid
             return jsonify({'message': 'Token is invalid'}), 401
@@ -56,7 +56,7 @@ def register():
 def login():
     data = request.get_json()
     print(data)
-    user = User.query.filter_by(email=data['email']).first()
+    user = Users.query.filter_by(email=data['email']).first()
     if user and  check_password_hash(user.password_hash, data['password']):
         token = user.encode_token()
         response = {
@@ -74,7 +74,7 @@ def login():
 def facebook_login():
     data = request.get_json()
     facebook_data = data.facebook
-    user = User.query.filter_by(facebook_id=facebook_data['id']).first()
+    user = Users.query.filter_by(facebook_id=facebook_data['id']).first()
     if user:
         token = user.encode_token()
         response = {
@@ -83,7 +83,7 @@ def facebook_login():
         }
         return jsonify(response), 200
     else:
-        user = User.query.filter_by(email=facebook_data['email']).first()
+        user = Users.query.filter_by(email=facebook_data['email']).first()
         if user:
             user.facebook_id = facebook_data['id']
             db.session.commit()
@@ -94,7 +94,7 @@ def facebook_login():
             }
             return jsonify(response), 201
         else:
-            user = User(name=facebook_data['name'], email=facebook_data['email'], facebook_id=facebook_data['id'])
+            user = Users(name=facebook_data['name'], email=facebook_data['email'], facebook_id=facebook_data['id'])
             db.session.add(user)
             db.session.commit()
             token = user.encode_token()

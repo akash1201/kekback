@@ -12,10 +12,21 @@ import jwt
 
 
 
-# User Model
-class User(db.Model):
-    __tablename__ = 'users'
 
+
+
+class UserWeapon(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    weapon_id = db.Column(db.Integer, db.ForeignKey('weapons.id'), primary_key=True)
+    config = db.Column(db.JSON, nullable=False)
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+    users = db.relationship("Users", back_populates="weapons")
+    weapons = db.relationship("Weapons", back_populates="users")
+
+
+# User Model
+class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -23,6 +34,8 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     facebook_id = db.Column(db.String(50), unique=True)
     google_id = db.Column(db.String(50), unique=True)
+
+    weapons = db.relationship('UserWeapon', back_populates="users")
 
     def __init__(self, name, email, password):
         self.name = name
@@ -57,24 +70,12 @@ class User(db.Model):
             return 'Token expired. Please log in again.'
         except jwt.InvalidTokenError:
             return 'Invalid token. Please log in again.'
-    
-    def as_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
-
-
-
-
-class Attachments(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    type = db.Column(db.String(20), nullable=False)
-    weapons = db.relationship("WeaponAttachment", back_populates="attachment")
-    
+            
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-
+    
+    
 class Weapons(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -85,11 +86,14 @@ class Weapons(db.Model):
     ammo = db.Column(db.String(20))
     modelUrl = db.Column(db.String(50))
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
+    custom = db.Column(db.Boolean, default=False)
 
-    attachments = db.relationship("WeaponAttachment", back_populates="weapon")
+    users = db.relationship('UserWeapon', back_populates="weapons")
+    attachments = db.relationship("WeaponAttachment", back_populates="weapons")
     
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 
 class WeaponAttachment(db.Model):
@@ -97,12 +101,22 @@ class WeaponAttachment(db.Model):
     attachment_id = db.Column(db.Integer, db.ForeignKey('attachments.id'), primary_key=True)
     attachment_type = db.Column(db.String(20), nullable=False)
 
-    weapon = db.relationship("Weapons", back_populates="attachments")
-    attachment = db.relationship("Attachments", back_populates="weapons")
+    weapons = db.relationship("Weapons", back_populates="attachments")
+    attachments = db.relationship("Attachments", back_populates="weapons")
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+
+
+class Attachments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    type = db.Column(db.String(20), nullable=False)
+    weapons = db.relationship("WeaponAttachment", back_populates="attachments")
+    
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 

@@ -22,7 +22,7 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@apostgres.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@postgres.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
     db.init_app(app)
     # migrate.init_app(app,db)
     

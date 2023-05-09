@@ -40,8 +40,7 @@ def token_required(f):
 @auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    password_hash = generate_password_hash(data['password'])
-    user = Users(name=data['name'], email=data['email'], password=password_hash)
+    user = Users(name=data['name'], email=data['email'], password=data['password'])
     db.session.add(user)
     db.session.commit()
     token = user.encode_token()
@@ -57,7 +56,8 @@ def login():
     data = request.get_json()
     print(data)
     user = Users.query.filter_by(email=data['email']).first()
-    if user and  check_password_hash(user.password_hash, data['password']):
+    print(user.password_hash,data['password'],check_password_hash(user.password_hash, data['password']))
+    if user and check_password_hash(user.password_hash, data['password']):
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully',

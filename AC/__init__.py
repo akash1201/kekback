@@ -1,6 +1,6 @@
 from flask import Flask
 from os import path
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 import json
 from flask_cors import CORS
 
@@ -10,7 +10,7 @@ from .db import db
 
 from .baseData.mock import guns, attachments, weaponAttachment
 
-migrate = Migrate()
+# migrate = Migrate()
 
 DB_NAME = 'AC.db'
 
@@ -22,9 +22,9 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] =  'postgresql://root:letmein123@ac-dev.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@apostgres.cl2yr0yt9ms9.us-west-1.rds.amazonaws.com:5432/postgres'
     db.init_app(app)
-    migrate.init_app(app,db)
+    # migrate.init_app(app,db)
     
     #CORS
     CORS(app)
@@ -44,7 +44,7 @@ def create_app():
 
     create_database(app)
 
-    create_data(db)
+    # create_data(db)
     
 
     return app

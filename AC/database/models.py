@@ -58,7 +58,7 @@ class Users(db.Model):
             payload,
             "MY_ENCODE_KEY", #need to make this secure
             algorithm='HS256'
-        ) 
+        )
         return key
 
     @staticmethod

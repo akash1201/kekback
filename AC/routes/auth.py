@@ -41,13 +41,13 @@ def token_required(f):
 def register():
     data = request.get_json()
     password_hash = generate_password_hash(data['password'])
-    user = User(name=data['name'], email=data['email'], password=password_hash)
+    user = Users(name=data['name'], email=data['email'], password=password_hash)
     db.session.add(user)
     db.session.commit()
     token = user.encode_token()
     response = {
         'message': 'User registered successfully',
-        'token': token.decode('UTF-8')
+        'token': token
     }
     return jsonify(response), 201
 

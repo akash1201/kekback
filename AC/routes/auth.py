@@ -14,19 +14,18 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        print(" we got here")
         # Check if Authorization header is present and extract token from it
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split(' ')[1]
-
+            
         # Return 401 error if token is missing
         if not token:
             return jsonify({'message': 'Token is missing'}), 401
-
+        
         try:
             # Decode token and get user ID
             data = jwt.decode(token, "MY_ENCODE_KEY", algorithms=['HS256'])
-            current_user = Users.query.get(data['id'])
+            current_user = Users.query.get(data['sub'])
         except:
             # Return 401 error if token is invalid
             return jsonify({'message': 'Token is invalid'}), 401

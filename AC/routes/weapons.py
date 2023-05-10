@@ -56,7 +56,7 @@ def getAttachmentsForWeaponById(id):
 
 @weapons.route('/weapon', methods=['POST'])
 @token_required
-def newWeapon():
+def newWeapon(user):
     if not request.json:
         abort(400)
     book = Weapons(

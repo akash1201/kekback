@@ -75,7 +75,7 @@ def newWeapon(user):
 
 @weapons.route('/weapon/<int:weapon_id>', methods=['DELETE'])
 @token_required
-def removeWeapon(weapon_id):
+def removeWeapon(userid,weapon_id):
     weapon = Weapons.query.get(weapon_id)
 
     if not weapon:

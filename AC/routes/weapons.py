@@ -66,7 +66,9 @@ def newWeapon(user):
         subType=request.json.get('subType'),
         action=request.json.get('action'),
         ammo=request.json.get('ammo'),
-        modelUrl=request.json.get('modelUrl')
+        modelUrl=request.json.get('modelUrl'),
+        miniModelUrl=request.json.get('miniModelUrl'),
+        custom=request.json.get('custom')
     )
     db.session.add(book) 
     db.session.commit()

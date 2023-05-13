@@ -34,7 +34,7 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost/postgres' #'postgresql://root:letmein123@54.151.55.87:5432/dev'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
     db.init_app(app)
     # migrate.init_app(app,db)
     

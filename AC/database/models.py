@@ -1,4 +1,6 @@
 from enum import unique
+
+from AC.database.enums import WeaponsCategoryEnum, WeaponsTypeEnum
 from ..db import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
@@ -18,8 +20,8 @@ class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     category = db.Column(db.String(20), nullable=False)
-    modelUrl = db.Column(db.String(50))
-    miniModelUrl = db.Column(db.String(50))
+    modelUrl = db.Column(db.String(300))
+    miniModelUrl = db.Column(db.String(300))
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
     custom = db.Column(db.Boolean, default=False)
 
@@ -84,7 +86,7 @@ class UserWeapon(db.Model):
 # User Model
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -136,13 +138,13 @@ class Users(db.Model):
 class Weapons(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    category = db.Column(db.String(20), nullable=False)
-    type = db.Column(db.String(20), nullable=False)
+    category = db.Column(db.Enum(WeaponsCategoryEnum), nullable=False)
+    type = db.Column(db.Enum(WeaponsTypeEnum), nullable=False)
     subType = db.Column(db.String(20), nullable=False)
     action = db.Column(db.String(20), nullable=False)
     ammo = db.Column(db.String(20), nullable=False)
-    modelUrl = db.Column(db.String(50), nullable=False)
-    miniModelUrl = db.Column(db.String(50), nullable=False)
+    modelUrl = db.Column(db.String(300), nullable=False)
+    miniModelUrl = db.Column(db.String(300), nullable=False)
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
     custom = db.Column(db.Boolean, default=False)
 

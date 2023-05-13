@@ -3,7 +3,7 @@ from os import path
 # from flask_migrate import Migrate
 import json
 from flask_cors import CORS
-
+from enum import Enum
 from sqlalchemy.dialects.postgresql import insert
 from AC.database.models import Attachments, WeaponAttachment, Weapons
 from .db import db
@@ -15,14 +15,23 @@ from .baseData.mock import guns, attachments, weaponAttachment
 DB_NAME = 'AC.db'
 
 
+class MyJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Enum):
+            return obj.value
+        return json.JSONEncoder.default(self, obj)
+
 def create_app():
     app = Flask(__name__)
     # secret hash key
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
 
+    #define custom json encoder for json package so it knows our custom enums
+    app.json_encoder = MyJSONEncoder
+
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost/postgres' #'postgresql://root:letmein123@54.151.55.87:5432/dev'
     db.init_app(app)
     # migrate.init_app(app,db)
     

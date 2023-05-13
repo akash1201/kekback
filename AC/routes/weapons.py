@@ -90,11 +90,7 @@ def new_weapon(user):
 
     # Add the new weapon to the database and commit the transaction
     db.session.add(new_weapon)
-    try:
-        db.session.commit()
-    except Exception as e:
-        print(str(e))
-        db.session.rollback()
+    db.session.commit()
 
     # Return the new weapon as a dictionary and set the response status code to 201
     return jsonify(new_weapon.as_dict()), 201

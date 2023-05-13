@@ -7,6 +7,7 @@ from enum import Enum
 from sqlalchemy.dialects.postgresql import insert
 from AC.database.models import Attachments, WeaponAttachment, Weapons
 from .db import db
+from datetime import datetime
 
 from .baseData.mock import guns, attachments, weaponAttachment
 
@@ -19,6 +20,8 @@ class MyJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Enum):
             return obj.value
+        elif isinstance(obj, datetime):
+            return obj.isoformat()
         return json.JSONEncoder.default(self, obj)
 
 def create_app():

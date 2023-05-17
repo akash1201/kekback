@@ -115,7 +115,6 @@ def removeWeapon(userid,weapon_id):
 
 
 @weapons.route('/attachments', methods=['GET'])
-@token_required
 def getAttachments():
     attachments = Attachments.query.all()
     attachments_dict = [attachment.as_dict() for attachment in attachments]
@@ -123,8 +122,7 @@ def getAttachments():
 
 
 @weapons.route('/attachments', methods=['POST'])
-@token_required
-def createAttachment(input):
+def createAttachment():
     # Create a new attachment
     data = request.json
     name = data.get('name')

@@ -9,25 +9,27 @@ weapons = Blueprint('weapons', __name__)
 
 @weapons.route('/weapons', methods=['GET'])
 def getWeapons():
-        items = Weapons.query.all()
-        print(items)
-        wepons = []
-        for item in items:
-            wepons.append(item.as_dict())
-        return jsonify(wepons)
+    # Get all weapons from the database
+    items = Weapons.query.all()
+    print(items)
+    wepons = []
+    for item in items:
+        wepons.append(item.as_dict())
+    return jsonify(wepons)
 
 
 @weapons.route('/weapon/<int:id>', methods=['GET'])
 def getWeaponById(id):
+    # Get a weapon by its ID from the database
     item = Weapons.query.get(id)
     if not item:
         abort(404)
     return jsonify(item.as_dict())
 
 
-    
 @weapons.route('/weapon/<int:id>/unique_attachment_type', methods=['GET'])
 def getUniqueAttachmentsForWeaponById(id):
+    # Get unique attachment types for a weapon by its ID
     attachments = db.session.query(Attachments.type).join(
         WeaponAttachment, Attachments.id == WeaponAttachment.attachment_id
     ).filter(
@@ -40,20 +42,20 @@ def getUniqueAttachmentsForWeaponById(id):
     return jsonify(results)
 
 
-
- 
 @weapons.route('/weapon/<int:id>/attachments', methods=['GET'])
 def getAttachmentsForWeaponById(id):
+    # Get attachments for a weapon by its ID
     attachments = db.session.query(Attachments).join(
         WeaponAttachment, Attachments.id == WeaponAttachment.attachment_id
     ).filter(
         WeaponAttachment.weapon_id == id
     ).distinct().all()
-    
+
     results = [attachment.as_dict() for attachment in attachments]
     if not results:
         return jsonify([])
     return jsonify(results)
+
 
 @weapons.route('/weapon', methods=['POST'])
 @token_required
@@ -109,3 +111,84 @@ def removeWeapon(userid,weapon_id):
     db.session.commit()
 
     return jsonify({'message': f'weapon with id {weapon_id} and associated weapon attachments have been deleted'})
+
+
+@weapons.route('/attachments', methods=['POST'])
+@token_required
+def createAttachment():
+    # Create a new attachment
+    data = request.json
+    name = data.get('name')
+    type = data.get('type')
+
+    # Validate the input
+    if not name or not type:
+        abort(400, 'Name and type are required')
+
+    attachment = Attachments(name=name, type=type)
+    db.session.add(attachment)
+    db.session.commit()
+
+    return jsonify(attachment.as_dict()), 201
+
+
+@weapons.route('/attachments/<int:id>', methods=['PUT'])
+@token_required
+def updateAttachment(id):
+    # Update an existing attachment by its ID
+    attachment = Attachments.query.get(id)
+    if not attachment:
+        abort(404, 'Attachment not found')
+
+    data = request.json
+    name = data.get('name')
+    type = data.get('type')
+
+    # Validate the input
+    if not name or not type:
+        abort(400, 'Name and type are required')
+
+    attachment.name = name
+    attachment.type = type
+    db.session.commit()
+
+    return jsonify(attachment.as_dict())
+
+
+@weapons.route('/weapon_attachments', methods=['POST'])
+@token_required
+def create_weapon_attachment():
+    # Get the request data
+    data = request.json
+
+    # Extract the required fields
+    weapon_id = data.get('weapon_id')
+    attachment_id = data.get('attachment_id')
+    attachment_type = data.get('attachment_type')
+
+    # Validate the required fields
+    if not weapon_id or not attachment_id or not attachment_type:
+        return jsonify({'message': 'Missing required fields'}), 400
+
+    # Check if the weapon exists
+    weapon = Weapons.query.get(weapon_id)
+    if not weapon:
+        return jsonify({'message': 'Weapon not found'}), 404
+
+    # Check if the attachment exists
+    attachment = Attachments.query.get(attachment_id)
+    if not attachment:
+        return jsonify({'message': 'Attachment not found'}), 404
+
+    # Create a new WeaponAttachment instance
+    weapon_attachment = WeaponAttachment(
+        weapon_id=weapon_id,
+        attachment_id=attachment_id,
+        attachment_type=attachment_type
+    )
+
+    # Add the new WeaponAttachment to the database session
+    db.session.add(weapon_attachment)
+    db.session.commit()
+
+    return jsonify({'message': 'WeaponAttachment created successfully', 'weapon_attachment': weapon_attachment.as_dict()}), 201

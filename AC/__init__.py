@@ -8,7 +8,7 @@ from sqlalchemy.dialects.postgresql import insert
 from AC.database.models import Attachments, WeaponAttachment, Weapons
 from .db import db
 from datetime import datetime
-
+import os
 from .baseData.mock import guns, attachments, weaponAttachment
 
 # migrate = Migrate()
@@ -34,7 +34,20 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
+    
+    print(os.environ.get('FLASK_ENV'),"env")
+    if os.environ.get('FLASK_ENV') == 'local':
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost:5432/postgres'
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
+
+
+
+
+
+
+
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
     db.init_app(app)
     # migrate.init_app(app,db)
     

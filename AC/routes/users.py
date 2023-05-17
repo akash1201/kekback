@@ -4,8 +4,10 @@ from flask import jsonify, request, abort, make_response
 from AC.database.models import Attachments, Users, UserWeapon, WeaponAttachment, Weapons
 from AC.routes.auth import token_required
 from .. import db
+
 users = Blueprint('users', __name__)
 
+# Get weapons associated with a user
 @token_required
 @users.route('/user/<int:user_id>/weapons', methods=['GET'])
 def get_user_weapons(user_id):
@@ -20,6 +22,7 @@ def get_user_weapons(user_id):
     return jsonify(weapons)
 
 
+# Get users associated with a weapon
 @token_required
 @users.route('/weapon/<int:weapon_id>/users', methods=['GET'])
 def get_weapon_users(weapon_id):
@@ -34,6 +37,7 @@ def get_weapon_users(weapon_id):
     return jsonify(users)
 
 
+# Add association between a user and a weapon
 @token_required
 @users.route('/user/<int:user_id>/weapon/<int:weapon_id>', methods=['POST'])
 def add_user_weapon_association(user_id, weapon_id):
@@ -52,6 +56,7 @@ def add_user_weapon_association(user_id, weapon_id):
     return jsonify({'message': 'Association added successfully'}), 201
 
 
+# Delete association between a user and a weapon
 @token_required
 @users.route('/user/<int:user_id>/weapon/<int:weapon_id>', methods=['DELETE'])
 def delete_user_weapon_association(user_id, weapon_id):

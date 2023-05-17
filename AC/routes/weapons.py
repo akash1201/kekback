@@ -18,7 +18,7 @@ def getWeapons():
     return jsonify(wepons)
 
 
-@weapons.route('/weapon/<int:id>', methods=['GET'])
+@weapons.route('/weapons/<int:id>', methods=['GET'])
 def getWeaponById(id):
     # Get a weapon by its ID from the database
     item = Weapons.query.get(id)
@@ -27,7 +27,7 @@ def getWeaponById(id):
     return jsonify(item.as_dict())
 
 
-@weapons.route('/weapon/<int:id>/unique_attachment_type', methods=['GET'])
+@weapons.route('/weapons/<int:id>/unique_attachment_type', methods=['GET'])
 def getUniqueAttachmentsForWeaponById(id):
     # Get unique attachment types for a weapon by its ID
     attachments = db.session.query(Attachments.type).join(
@@ -42,7 +42,7 @@ def getUniqueAttachmentsForWeaponById(id):
     return jsonify(results)
 
 
-@weapons.route('/weapon/<int:id>/attachments', methods=['GET'])
+@weapons.route('/weapons/<int:id>/attachments', methods=['GET'])
 def getAttachmentsForWeaponById(id):
     # Get attachments for a weapon by its ID
     attachments = db.session.query(Attachments).join(
@@ -57,7 +57,7 @@ def getAttachmentsForWeaponById(id):
     return jsonify(results)
 
 
-@weapons.route('/weapon', methods=['POST'])
+@weapons.route('/weapons', methods=['POST'])
 @token_required
 def new_weapon(user):
     # Check if the request contains JSON data
@@ -98,7 +98,7 @@ def new_weapon(user):
     return jsonify(new_weapon.as_dict()), 201
 
 
-@weapons.route('/weapon/<int:weapon_id>', methods=['DELETE'])
+@weapons.route('/weapons/<int:weapon_id>', methods=['DELETE'])
 @token_required
 def removeWeapon(userid,weapon_id):
     weapon = Weapons.query.get(weapon_id)
@@ -113,9 +113,18 @@ def removeWeapon(userid,weapon_id):
     return jsonify({'message': f'weapon with id {weapon_id} and associated weapon attachments have been deleted'})
 
 
+
+@weapons.route('/attachments', methods=['GET'])
+@token_required
+def getAttachments():
+    attachments = Attachments.query.all()
+    attachments_dict = [attachment.as_dict() for attachment in attachments]
+    return jsonify(attachments_dict), 200
+
+
 @weapons.route('/attachments', methods=['POST'])
 @token_required
-def createAttachment():
+def createAttachment(input):
     # Create a new attachment
     data = request.json
     name = data.get('name')

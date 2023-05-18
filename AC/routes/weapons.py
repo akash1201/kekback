@@ -139,9 +139,24 @@ def createAttachment():
     return jsonify(attachment.as_dict()), 201
 
 
+@weapons.route('/attachments/<int:attachment_id>', methods=['DELETE'])
+@token_required
+def delete_attachment(attachment_id):
+    # Check if the attachment exists
+    attachment = Attachments.query.get(attachment_id)
+    if not attachment:
+        abort(404, 'Attachment not found')
+
+    # Delete the attachment
+    db.session.delete(attachment)
+    db.session.commit()
+
+    return jsonify(message='Attachment deleted'), 200
+
 @weapons.route('/attachments/<int:id>', methods=['PUT'])
 @token_required
 def updateAttachment(id):
+    print("we got here")
     # Update an existing attachment by its ID
     attachment = Attachments.query.get(id)
     if not attachment:
@@ -150,7 +165,6 @@ def updateAttachment(id):
     data = request.json
     name = data.get('name')
     type = data.get('type')
-
     # Validate the input
     if not name or not type:
         abort(400, 'Name and type are required')
@@ -164,7 +178,7 @@ def updateAttachment(id):
 
 @weapons.route('/weapon_attachments', methods=['POST'])
 @token_required
-def create_weapon_attachment():
+def create_weapon_attachment(token):
     # Get the request data
     data = request.json
 
@@ -199,3 +213,19 @@ def create_weapon_attachment():
     db.session.commit()
 
     return jsonify({'message': 'WeaponAttachment created successfully', 'weapon_attachment': weapon_attachment.as_dict()}), 201
+
+
+@weapons.route('/attachments/<int:weapon_id>/<int:attachment_id>', methods=['DELETE'])
+@token_required
+def delete_weapon_attachment(weapon_id, attachment_id):
+    # Check if the attachment exists
+    weapon_attachment = WeaponAttachment.query.filter_by(weapon_id=weapon_id, attachment_id=attachment_id).first()
+    if not weapon_attachment:
+        abort(404, 'Weapon attachment not found')
+
+    # Delete the weapon attachment
+    db.session.delete(weapon_attachment)
+    db.session.commit()
+
+    return jsonify(message='Weapon attachment deleted'), 200
+

@@ -14,8 +14,10 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
+        print(request.headers['Authorization'])
         # Check if Authorization header is present and extract token from it
         if 'Authorization' in request.headers:
+            print(request.headers['Authorization'])
             token = request.headers['Authorization'].split(' ')[1]
             
         # Return 401 error if token is missing

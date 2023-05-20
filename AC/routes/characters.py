@@ -14,7 +14,7 @@ def get_all_characters():
     return jsonify([character.as_dict() for character in characters])
 
 # Route to get a specific character by ID
-@characters.route('/character/<int:character_id>', methods=['GET'])
+@characters.route('/characters/<int:character_id>', methods=['GET'])
 def get_character(character_id):
     character = Characters.query.get_or_404(character_id)
     return jsonify(character.as_dict())
@@ -30,7 +30,7 @@ def create_character():
     return jsonify(character.as_dict())
 
 # Route to update an existing character by ID
-@characters.route('/character/<int:character_id>', methods=['PUT'])
+@characters.route('/characters/<int:character_id>', methods=['PUT'])
 def update_character(character_id):
     character = Characters.query.get_or_404(character_id)
     data = request.get_json()
@@ -43,7 +43,7 @@ def update_character(character_id):
     return jsonify(character.as_dict())
 
 # Route to delete an existing character by ID
-@characters.route('/character/<int:character_id>', methods=['DELETE'])
+@characters.route('/characters/<int:character_id>', methods=['DELETE'])
 def delete_character(character_id):
     character = Characters.query.get_or_404(character_id)
     db.session.delete(character)
@@ -51,7 +51,7 @@ def delete_character(character_id):
     return '', 204
 
 
-@characters.route('/character/<character_type>/unique_outfit_type')
+@characters.route('/characters/<character_type>/unique_outfit_type')
 def get_character_outfit_types(character_type):
     outfit_types = db.session.query(CharacterOutfit.outfit_type).join(Characters).join(Outfits).filter(Characters.category == character_type).distinct().all()
     outfit_types = [outfit_type[0] for outfit_type in outfit_types]
@@ -74,7 +74,7 @@ def get_all_outfits():
     return jsonify([outfit.as_dict() for outfit in outfits]), 200
 
 # Get outfit by id
-@characters.route('/outfit/<int:outfit_id>', methods=['GET'])
+@characters.route('/outfits/<int:outfit_id>', methods=['GET'])
 def get_outfit_by_id(outfit_id):
     outfit = Outfits.query.get(outfit_id)
     if not outfit:
@@ -82,7 +82,7 @@ def get_outfit_by_id(outfit_id):
     return jsonify(outfit.as_dict()), 200
 
 # Create a new outfit
-@characters.route('/outfit', methods=['POST'])
+@characters.route('/outfits', methods=['POST'])
 def create_new_outfit():
     data = request.get_json()
     name = data.get('name')
@@ -95,7 +95,7 @@ def create_new_outfit():
     return jsonify(outfit.as_dict()), 201
 
 # Update an existing outfit
-@characters.route('/outfit/<int:outfit_id>', methods=['PUT'])
+@characters.route('/outfits/<int:outfit_id>', methods=['PUT'])
 def update_outfit(outfit_id):
     data = request.get_json()
     outfit = Outfits.query.get(outfit_id)
@@ -109,7 +109,7 @@ def update_outfit(outfit_id):
     return jsonify(outfit.as_dict()), 200
 
 # Delete a outfit
-@characters.route('/outfit/<int:outfit_id>', methods=['DELETE'])
+@characters.route('/outfits/<int:outfit_id>', methods=['DELETE'])
 def delete_outfit(outfit_id):
     outfit = Outfits.query.get(outfit_id)
     if not outfit:

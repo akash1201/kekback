@@ -13,6 +13,15 @@ def get_all_characters():
     characters = Characters.query.all()
     return jsonify([character.as_dict() for character in characters])
 
+
+# Route to get unique character categories
+@characters.route('/character-categories')
+def get_character_categories():
+    character_categories = db.session.query(Characters.category).distinct().all()
+    character_categories = [category[0] for category in character_categories]
+    return jsonify(character_categories)
+
+
 # Route to get a specific character by ID
 @characters.route('/characters/<int:character_id>', methods=['GET'])
 def get_character(character_id):

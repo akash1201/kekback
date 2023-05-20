@@ -18,6 +18,13 @@ def getWeapons():
     return jsonify(wepons)
 
 
+@weapons.route('/weapon-types')
+def get_weapon_types():
+    # Get unique weapon types same as the enum WeaponsTypeEnum
+    weapon_types = db.session.query(Weapons.type).distinct().all()
+    weapon_types = [weapon_type[0] for weapon_type in weapon_types]
+    return jsonify(weapon_types)
+
 @weapons.route('/weapons/<int:id>', methods=['GET'])
 def getWeaponById(id):
     # Get a weapon by its ID from the database

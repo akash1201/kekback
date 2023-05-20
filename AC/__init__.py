@@ -8,7 +8,6 @@ from sqlalchemy.dialects.postgresql import insert
 from AC.database.models import Attachments, WeaponAttachment, Weapons
 from .db import db
 from datetime import datetime
-import os
 from .baseData.mock import guns, attachments, weaponAttachment
 
 # migrate = Migrate()
@@ -24,7 +23,7 @@ class MyJSONEncoder(json.JSONEncoder):
             return obj.isoformat()
         return json.JSONEncoder.default(self, obj)
 
-def create_app():
+def create_app(env):
     app = Flask(__name__)
     # secret hash key
     app.config['SECRET_KEY'] = 'KekronMekron-Hask-Key'
@@ -34,13 +33,11 @@ def create_app():
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    
-    print(os.environ.get('FLASK_ENV'),"env")
-    if os.environ.get('FLASK_ENV') == 'local':
+    print(env, "env app is launched with")
+    if env == '1':
         app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost:5432/postgres'
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
-
 
 
 

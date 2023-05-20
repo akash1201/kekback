@@ -13,6 +13,7 @@
 
 
 This is how you convert glb to jsx: https://www.youtube.com/watch?v=xy_tbV4pC54 using package: https://www.npmjs.com/package/gltfjsx command: npx gltfjsx ./weapon.glb --transform
+Add animation to a model https://www.youtube.com/watch?v=vApG8aYD5aI
 
 
 Infra setup:

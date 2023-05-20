@@ -51,6 +51,18 @@ def delete_character(character_id):
     return '', 204
 
 
+@characters.route('/character/<character_type>/unique_outfit_type')
+def get_character_outfit_types(character_type):
+    outfit_types = db.session.query(CharacterOutfit.outfit_type).join(Characters).join(Outfits).filter(Characters.category == character_type).distinct().all()
+    outfit_types = [outfit_type[0] for outfit_type in outfit_types]
+    return jsonify(outfit_types)
+
+
+
+
+
+
+
 
 
 

@@ -143,7 +143,7 @@ def get_all_outfits_for_character(character_id):
 
 # Create a outfit for a given character
 @token_required
-@characters.route('/characters/<int:character_id>/outfits', methods=['POST'])
+@characters.route('/characters_outfits', methods=['POST'])
 def create_outfit_for_character(character_id):
     data = request.get_json()
     character_name = data['character_name']

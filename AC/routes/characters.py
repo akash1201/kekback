@@ -29,11 +29,11 @@ def get_character(character_id):
     return jsonify(character.as_dict())
 
 # Route to create a new character
-@characters.route('/character', methods=['POST'])
+@characters.route('/characters', methods=['POST'])
 def create_character():
     data = request.get_json()
     character = Characters(name=data['name'], category=data['category'], modelUrl=data['modelUrl'], 
-                           miniModelUrl=data['miniModelUrl'], custom=data['custom'])
+                           miniModelUrl=data['miniModelUrl'], custom=data['custom'], minRequiredOutfits = data['minRequiredOutfits'])
     db.session.add(character)
     db.session.commit()
     return jsonify(character.as_dict())
@@ -48,6 +48,7 @@ def update_character(character_id):
     character.modelUrl = data['modelUrl']
     character.miniModelUrl = data['miniModelUrl']
     character.custom = data['custom']
+    character.minRequiredOutfits = data['minRequiredOutfits']
     db.session.commit()
     return jsonify(character.as_dict())
 
@@ -144,20 +145,20 @@ def get_all_outfits_for_character(character_id):
 # Create a outfit for a given character
 @token_required
 @characters.route('/characters_outfits', methods=['POST'])
-def create_outfit_for_character(character_id):
+def create_outfit_for_character():
     data = request.get_json()
     character_name = data['character_name']
     outfit_name = data['outfit_name']
 
     character = Characters.query.filter_by(name=character_name).first()
     if not character:
-        return jsonify({'message': 'Character not found'}), 404
+        return jsonify({'message': 'Character not found'}), 604
 
     outfit = Outfits.query.filter_by(name=outfit_name).first()
     if not outfit:
-        return jsonify({'message': 'Outfit not found'}), 404
+        return jsonify({'message': 'Outfit not found'}), 604
 
-    character_outfit = CharacterOutfit(character_id=character.id, outfit_id=outfit.id, outfit_type=data['outfit_type'])
+    character_outfit = CharacterOutfit(character_id=character.id, outfit_id=outfit.id, outfit_type=outfit.type)
     db.session.add(character_outfit)
     db.session.commit()
 

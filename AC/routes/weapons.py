@@ -70,7 +70,7 @@ def new_weapon(user):
     # Check if the request contains JSON data
     if not request.json:
         abort(400)
-
+    
     # Check if the request contains valid values for category and type
     data = request.json
     if 'category' not in data or data['category'] not in WeaponsCategoryEnum.__members__:
@@ -210,7 +210,7 @@ def create_weapon_attachment(token):
     weapon_attachment = WeaponAttachment(
         weapon_id=weapon.id,
         attachment_id=attachment.id,
-        attachment_type=attachment.attachment_type
+        attachment_type=attachment.type
     )
 
     # Add the new WeaponAttachment to the database session

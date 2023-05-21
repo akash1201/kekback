@@ -24,6 +24,7 @@ class Characters(db.Model):
     miniModelUrl = db.Column(db.String(300))
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
     custom = db.Column(db.Boolean, default=False)
+    minRequiredOutfits = db.Column(db.JSON, nullable=False)
 
     users = db.relationship('UserCharacter', back_populates="characters")
     outfits = db.relationship("CharacterOutfit", back_populates="characters")

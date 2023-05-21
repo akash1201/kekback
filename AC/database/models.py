@@ -18,7 +18,7 @@ import jwt
 
 class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     category = db.Column(db.String(20), nullable=False)
     modelUrl = db.Column(db.String(300))
     miniModelUrl = db.Column(db.String(300))
@@ -49,7 +49,7 @@ class CharacterOutfit(db.Model):
 
 class Outfits(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     type = db.Column(db.String(20), nullable=False)
     characters = db.relationship("CharacterOutfit", back_populates="outfits")
     createdDate = db.Column(db.DateTime, default=datetime.utcnow)
@@ -138,7 +138,7 @@ class Users(db.Model):
     
 class Weapons(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     category = db.Column(db.Enum(WeaponsCategoryEnum), nullable=False)
     type = db.Column(db.Enum(WeaponsTypeEnum), nullable=False)
     subType = db.Column(db.String(20), nullable=False)
@@ -172,7 +172,7 @@ class WeaponAttachment(db.Model):
 
 class Attachments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     type = db.Column(db.String(20), nullable=False)
     weapons = db.relationship("WeaponAttachment", back_populates="attachments")
     

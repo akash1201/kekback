@@ -182,7 +182,6 @@ def updateAttachment(id):
 
     return jsonify(attachment.as_dict())
 
-
 @weapons.route('/weapon_attachments', methods=['POST'])
 @token_required
 def create_weapon_attachment(token):
@@ -190,29 +189,28 @@ def create_weapon_attachment(token):
     data = request.json
 
     # Extract the required fields
-    weapon_id = data.get('weapon_id')
-    attachment_id = data.get('attachment_id')
-    attachment_type = data.get('attachment_type')
+    weapon_name = data.get('weapon_name')
+    attachment_name = data.get('attachment_name')
 
     # Validate the required fields
-    if not weapon_id or not attachment_id or not attachment_type:
+    if not weapon_name or not attachment_name:
         return jsonify({'message': 'Missing required fields'}), 400
 
     # Check if the weapon exists
-    weapon = Weapons.query.get(weapon_id)
+    weapon = Weapons.query.filter_by(name=weapon_name).first()
     if not weapon:
         return jsonify({'message': 'Weapon not found'}), 404
 
     # Check if the attachment exists
-    attachment = Attachments.query.get(attachment_id)
+    attachment = Attachments.query.filter_by(name=attachment_name).first()
     if not attachment:
         return jsonify({'message': 'Attachment not found'}), 404
 
     # Create a new WeaponAttachment instance
     weapon_attachment = WeaponAttachment(
-        weapon_id=weapon_id,
-        attachment_id=attachment_id,
-        attachment_type=attachment_type
+        weapon_id=weapon.id,
+        attachment_id=attachment.id,
+        attachment_type=attachment.attachment_type
     )
 
     # Add the new WeaponAttachment to the database session

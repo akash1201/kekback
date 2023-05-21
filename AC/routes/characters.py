@@ -60,7 +60,7 @@ def delete_character(character_id):
     return '', 204
 
 
-@characters.route('/characters/<character_type>/unique_outfit_type')
+@characters.route('/characters/<character_type>/unique_outfit_type', methods=['GET'])
 def get_character_outfit_types(character_type):
     outfit_types = db.session.query(CharacterOutfit.outfit_type).join(Characters).join(Outfits).filter(Characters.category == character_type).distinct().all()
     outfit_types = [outfit_type[0] for outfit_type in outfit_types]
@@ -142,19 +142,31 @@ def get_all_outfits_for_character(character_id):
     return jsonify([outfit.as_dict() for outfit in outfits])
 
 # Create a outfit for a given character
+@token_required
 @characters.route('/characters/<int:character_id>/outfits', methods=['POST'])
 def create_outfit_for_character(character_id):
     data = request.get_json()
-    outfit = Outfits(name=data['name'], type=data['type'])
-    db.session.add(outfit)
-    db.session.flush()
-    character_outfit = CharacterOutfit(character_id=character_id, outfit_id=outfit.id, outfit_type=data['outfit_type'])
+    character_name = data['character_name']
+    outfit_name = data['outfit_name']
+
+    character = Characters.query.filter_by(name=character_name).first()
+    if not character:
+        return jsonify({'message': 'Character not found'}), 404
+
+    outfit = Outfits.query.filter_by(name=outfit_name).first()
+    if not outfit:
+        return jsonify({'message': 'Outfit not found'}), 404
+
+    character_outfit = CharacterOutfit(character_id=character.id, outfit_id=outfit.id, outfit_type=data['outfit_type'])
     db.session.add(character_outfit)
     db.session.commit()
+
     return jsonify(character_outfit.as_dict())
 
 
+
 # Delete a outfit for a given character
+@token_required
 @characters.route('/characters/<int:character_id>/outfits/<int:outfit_id>', methods=['DELETE'])
 def delete_outfit_for_character(character_id, outfit_id):
     character_outfit = CharacterOutfit.query.filter_by(character_id=character_id, outfit_id=outfit_id).first_or_404()
@@ -178,6 +190,7 @@ def get_character_for_user(user_id, character_id):
     return jsonify(user_character.characters.as_dict())
 
 #Add a character to a user's list of characters.
+@token_required
 @characters.route('/users/<int:user_id>/characters', methods=['POST'])
 def add_character_to_user(user_id):
     data = request.get_json()
@@ -189,6 +202,7 @@ def add_character_to_user(user_id):
     return jsonify(user_character.as_dict())
 
 #Update a specific character associated with a user.
+@token_required
 @characters.route('/users/<int:user_id>/characters/<int:character_id>', methods=['PUT'])
 def update_character_for_user(user_id, character_id):
     user_character = UserCharacter.query.filter_by(user_id=user_id, character_id=character_id).first_or_404()
@@ -199,6 +213,7 @@ def update_character_for_user(user_id, character_id):
     return jsonify(user_character.as_dict())
 
 #Delete a specific character associated with a user.
+@token_required
 @characters.route('/users/<int:user_id>/characters/<int:character_id>', methods=['DELETE'])
 def delete_character_for_user(user_id, character_id):
     user_character = UserCharacter.query.filter_by(user_id=user_id, character_id=character_id).first_or_404()

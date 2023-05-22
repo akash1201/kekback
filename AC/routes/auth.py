@@ -78,13 +78,15 @@ def login():
 @auth.route('/auth/facebook', methods=['POST'])
 def facebook_login():
     data = request.get_json()
-    facebook_data = data.facebook
+    print(data,"got it")
+    facebook_data = data['facebook']
     user = Users.query.filter_by(facebook_id=facebook_data['id']).first()
+    print(data,"got it",user)
     if user:
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully with Facebook',
-            'token': token.decode('UTF-8'),
+            'token': token,
             'email':user.email,
             "name":user.name
         }
@@ -97,7 +99,7 @@ def facebook_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and linked with Facebook',
-                'token': token.decode('UTF-8'),
+                'token': token,
                 'email':user.email,
                 "name":user.name
             }
@@ -109,7 +111,7 @@ def facebook_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and logged in successfully with Facebook',
-                'token': token.decode('UTF-8'),
+                'token': token,
                 'email':user.email,
                 "name":user.name
             }
@@ -127,7 +129,7 @@ def google_login():
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully with Google',
-            'token': token.decode('UTF-8'),
+            'token': token,
             'email': user.email,
             'name': user.name
         }
@@ -142,7 +144,7 @@ def google_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and linked with Google',
-                'token': token.decode('UTF-8'),
+                'token': token,
                 'email': user.email,
                 'name': user.name
             }
@@ -155,7 +157,7 @@ def google_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and logged in successfully with Google',
-                'token': token.decode('UTF-8'),
+                'token': token,
                 'email': user.email,
                 'name': user.name
             }

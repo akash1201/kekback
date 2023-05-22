@@ -105,7 +105,7 @@ def facebook_login():
             }
             return jsonify(response), 201
         else:
-            user = Users(name=facebook_data['name'], email=facebook_data['email'], facebook_id=facebook_data['id'])
+            user = Users(name=facebook_data['name'], email=facebook_data['email'],password=facebook_data['id'] ,facebook_id=facebook_data['id'])
             db.session.add(user)
             db.session.commit()
             token = user.encode_token()
@@ -151,7 +151,7 @@ def google_login():
             return jsonify(response), 201
         else:
             # If no user with the same email exists, create a new user with the Google data and return a successful response
-            user = Users(name=google_data['name'], email=google_data['email'], google_id=google_data['id'])
+            user = Users(name=google_data['name'], email=google_data['email'],password=google_data['id'] , google_id=google_data['id'])
             db.session.add(user)
             db.session.commit()
             token = user.encode_token()

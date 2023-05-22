@@ -135,8 +135,18 @@ def delete_outfit(outfit_id):
 # Get all outfits for a given character
 @characters.route('/characters/<int:character_id>/outfits', methods=['GET'])
 def get_all_outfits_for_character(character_id):
-    outfits = CharacterOutfit.query.filter_by(character_id=character_id)
-    return jsonify([outfit.as_dict() for outfit in outfits])
+    outfits =  db.session.query(Outfits).join(
+        CharacterOutfit, Outfits.id == CharacterOutfit.outfit_id
+    ).filter(
+        CharacterOutfit.character_id == character_id
+    ).distinct().all()
+    results = [outfit.as_dict() for outfit in outfits]
+    if not results:
+        return jsonify([])
+    return jsonify(results)
+
+
+
 
 # Create a outfit for a given character
 @token_required

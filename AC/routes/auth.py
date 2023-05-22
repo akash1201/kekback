@@ -115,6 +115,51 @@ def facebook_login():
             }
             return jsonify(response), 201
         
+@auth.route('/auth/google', methods=['POST'])
+def google_login():
+    data = request.get_json()
+    google_data = data.google
+    
+    # Check if the user exists based on the Google ID
+    user = Users.query.filter_by(google_id=google_data['id']).first()
+    if user:
+        # If the user exists, generate a token and return a successful response
+        token = user.encode_token()
+        response = {
+            'message': 'User logged in successfully with Google',
+            'token': token.decode('UTF-8'),
+            'email': user.email,
+            'name': user.name
+        }
+        return jsonify(response), 200
+    else:
+        # If the user doesn't exist, check if there is a user with the same email
+        user = Users.query.filter_by(email=google_data['email']).first()
+        if user:
+            # If a user with the same email exists, link the Google ID to the user and return a successful response
+            user.google_id = google_data['id']
+            db.session.commit()
+            token = user.encode_token()
+            response = {
+                'message': 'User registered and linked with Google',
+                'token': token.decode('UTF-8'),
+                'email': user.email,
+                'name': user.name
+            }
+            return jsonify(response), 201
+        else:
+            # If no user with the same email exists, create a new user with the Google data and return a successful response
+            user = Users(name=google_data['name'], email=google_data['email'], google_id=google_data['id'])
+            db.session.add(user)
+            db.session.commit()
+            token = user.encode_token()
+            response = {
+                'message': 'User registered and logged in successfully with Google',
+                'token': token.decode('UTF-8'),
+                'email': user.email,
+                'name': user.name
+            }
+            return jsonify(response), 201
 
 
 @auth.route('/reset_password', methods=['POST'])

@@ -47,7 +47,9 @@ def register():
     token = user.encode_token()
     response = {
         'message': 'User registered successfully',
-        'token': token
+        'token': token,
+        'email':data['email'],
+        "name":data['name']
     }
     return jsonify(response), 201
 
@@ -62,7 +64,9 @@ def login():
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully',
-            'token': token
+            'token': token,
+            'email':user.email,
+            "name":user.name
         }
         return jsonify(response), 200
     else:
@@ -80,7 +84,9 @@ def facebook_login():
         token = user.encode_token()
         response = {
             'message': 'User logged in successfully with Facebook',
-            'token': token.decode('UTF-8')
+            'token': token.decode('UTF-8'),
+            'email':user.email,
+            "name":user.name
         }
         return jsonify(response), 200
     else:
@@ -91,7 +97,9 @@ def facebook_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and linked with Facebook',
-                'token': token.decode('UTF-8')
+                'token': token.decode('UTF-8'),
+                'email':user.email,
+                "name":user.name
             }
             return jsonify(response), 201
         else:
@@ -101,6 +109,33 @@ def facebook_login():
             token = user.encode_token()
             response = {
                 'message': 'User registered and logged in successfully with Facebook',
-                'token': token.decode('UTF-8')
+                'token': token.decode('UTF-8'),
+                'email':user.email,
+                "name":user.name
             }
             return jsonify(response), 201
+        
+
+
+@auth.route('/reset_password', methods=['POST'])
+def reset_password():
+    email = request.json.get('email')
+    old_password = request.json.get('old_password')
+    new_password = request.json.get('new_password')
+
+    if not email or not old_password or not new_password:
+        return jsonify({'error': 'Email, old password, and new password are required'}), 400
+
+    user = Users.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    # Verify the old password
+    if not user.check_password(old_password):
+        return jsonify({'error': 'Invalid old password'}), 401
+
+    # Update the user's password
+    user.set_password(new_password)
+    db.session.commit()
+
+    return jsonify({'message': 'Password reset successful'})

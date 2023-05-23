@@ -164,6 +164,14 @@ def google_login():
             return jsonify(response), 201
 
 
+# Route that requires authentication
+@auth.route('/token_verify', methods=['GET'])
+@token_required
+def protected_route(current_user):
+    return jsonify({'message': 'You are logged in as ' + current_user.name})
+
+
+
 @auth.route('/reset_password', methods=['POST'])
 def reset_password():
     email = request.json.get('email')

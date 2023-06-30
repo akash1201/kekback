@@ -202,7 +202,7 @@ def get_character_for_user(user_id, character_id):
 def add_character_to_user(user_id):
     data = request.get_json()
     character = Characters.query.get_or_404(data['character_id'])
-    user_character = UserCharacter(user_id=user_id, character_id=data['character_id'], outfit=data['outfit'],
+    user_character = UserCharacter(user_id=user_id, character_id=data['character_id'], config=data['outfit'],
                                     default=data['default'])
     db.session.add(user_character)
     db.session.commit()
@@ -214,7 +214,7 @@ def add_character_to_user(user_id):
 def update_character_for_user(user_id, character_id):
     user_character = UserCharacter.query.filter_by(user_id=user_id, character_id=character_id).first_or_404()
     data = request.get_json()
-    user_character.outfit = data['outfit']
+    user_character.config = data['outfit']
     user_character.default = data['default']
     db.session.commit()
     return jsonify(user_character.as_dict())

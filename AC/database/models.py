@@ -69,7 +69,8 @@ class UserCharacter(db.Model):
 
     users = db.relationship("Users", back_populates="characters")
     characters = db.relationship("Characters", back_populates="users")
-
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 

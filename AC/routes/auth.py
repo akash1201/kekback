@@ -49,7 +49,8 @@ def register():
         'message': 'User registered successfully',
         'token': token,
         'email':data['email'],
-        "name":data['name']
+        "name":data['name'],
+        "character_detail":None
     }
     return jsonify(response), 201
 

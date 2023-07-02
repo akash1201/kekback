@@ -1,7 +1,7 @@
 from urllib import request
 from flask import Blueprint
 from flask import request, jsonify, make_response, url_for, redirect, abort
-from AC.database.models import Attachments, Tacticals, Users, WeaponAttachment, Weapons
+from AC.database.models import Attachments, Tacticals, Users, WeaponAttachment, Weapons, UserCharacter, Characters
 from .. import db
 from functools import wraps
 import json
@@ -46,6 +46,7 @@ def register():
     db.session.commit()
     token = user.encode_token()
     response = {
+        'userId' : user.id,
         'message': 'User registered successfully',
         'token': token,
         'email':data['email'],
@@ -60,6 +61,22 @@ def login():
     data = request.get_json()
     print(data)
     user = Users.query.filter_by(email=data['email']).first()
+    user_characters = UserCharacter.query.filter_by(user_id=user.id).all()
+
+    character_details = []
+    for user_character in user_characters:
+        character = user_character.characters
+        character_details.append({
+            'id': character.id,
+            'name': character.name,
+            'category': character.category,
+            'modelUrl': character.modelUrl,
+            'miniModelUrl': character.miniModelUrl,
+            'createdDate': character.createdDate,
+            'custom': character.custom,
+            'minRequiredOutfits': character.minRequiredOutfits,
+            'config': user_character.config
+        })
     print(user.password_hash,data['password'],check_password_hash(user.password_hash, data['password']))
     if user and check_password_hash(user.password_hash, data['password']):
         token = user.encode_token()
@@ -67,7 +84,9 @@ def login():
             'message': 'User logged in successfully',
             'token': token,
             'email':user.email,
-            "name":user.name
+            "name":user.name,
+            "userId": user.id,
+            "userCharacter": character_details
         }
         return jsonify(response), 200
     else:

@@ -68,3 +68,20 @@ def delete_user_weapon_association(user_id, weapon_id):
     db.session.commit()
 
     return jsonify({'message': 'Association deleted successfully'}), 200
+
+@users.route('/update/<int:user_id>/name', methods=['PUT'])
+def update_user_name(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    new_name = request.json.get('name')
+    if not new_name:
+        return jsonify({'message': 'Missing name parameter'}), 400
+
+    user.name = new_name
+    db.session.commit()
+
+    return jsonify({'message': 'User name updated successfully'})
+
+

@@ -61,7 +61,7 @@ def login():
     data = request.get_json()
     print(data)
     user = Users.query.filter_by(email=data['email']).first()
-    user_characters = UserCharacter.query.filter_by(user_id=user.id).all()
+    user_characters = UserCharacter.query.filter_by(user_id=user.id, default=True).all()
 
     character_details = []
     for user_character in user_characters:

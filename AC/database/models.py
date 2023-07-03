@@ -98,11 +98,11 @@ class Users(db.Model):
     weapons = db.relationship('UserWeapon', back_populates="users")
     characters = db.relationship('UserCharacter', back_populates="users")
 
-    def __init__(self, name, email, facebook_id, password):
+    def __init__(self, name, email, password, facebook_id=None):
         self.name = name
         self.email = email
-        self.facebook_id = facebook_id
         self.password_hash = generate_password_hash(password)
+        self.facebook_id = facebook_id
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

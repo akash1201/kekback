@@ -1,3 +1,6 @@
 .venv
 DS_Store
 AC/AC.db
+_pycache_/
+
+

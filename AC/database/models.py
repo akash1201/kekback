@@ -61,8 +61,8 @@ class Outfits(db.Model):
 
 
 class UserCharacter(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'))
     config = db.Column(db.JSON, nullable=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     default = db.Column(db.Boolean, default=False)

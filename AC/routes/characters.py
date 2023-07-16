@@ -201,12 +201,22 @@ def get_character_for_user(user_id, character_id):
 @characters.route('/users/<int:user_id>/characters', methods=['POST'])
 def add_character_to_user(user_id):
     data = request.get_json()
-    character = Characters.query.get_or_404(data['character_id'])
-    user_character = UserCharacter(user_id=user_id, character_id=data['character_id'], config=data['outfit'],
-                                    default=data['default'])
-    db.session.add(user_character)
+    character_id = data['character_id']
+    
+    # Check if the user_character record exists
+    user_character = UserCharacter.query.filter_by(user_id=user_id, character_id=character_id).first()
+    
+    if user_character:
+        # Update the existing record
+        user_character.config = data['outfit']
+        user_character.default = data['default']
+    else:
+        # Create a new record
+        user_character = UserCharacter(user_id=user_id, character_id=character_id, config=data['outfit'],default=data['default'])
+        db.session.add(user_character)
     db.session.commit()
     return jsonify(user_character.as_dict())
+
 
 #Update a specific character associated with a user.
 @token_required

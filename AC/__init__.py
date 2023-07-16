@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from os import path
 # from flask_migrate import Migrate
@@ -33,11 +34,19 @@ def create_app(env):
 
     # init db 
     # 'postgresql://postgres:ranju12@localhost/postgres' #
-    print(env, "env app is launched with")
-    if env == '1':
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost:5432/postgres'
-    else:
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
+
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+
+
+    # print(env, "env app is launched with")
+    # if env == '1':
+    #     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:letmein123@localhost:5432/postgres'
+    # else:
+    #     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://root:letmein123@54.151.55.87:5432/dev'
+
+
+        # postgresql://dev_qyzo_user:SU1Ep0iRuw856IthPsQ0E6J28TEEfhlP@dpg-ciprokt9aq0dcpvrdsog-a.oregon-postgres.render.com/dev_qyzo
 
 
 

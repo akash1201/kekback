@@ -69,13 +69,15 @@ def delete_user_weapon_association(user_id, weapon_id):
 
     return jsonify({'message': 'Association deleted successfully'}), 200
 
-@users.route('/update/<int:user_id>/name', methods=['PUT'])
+@users.route('/update/<int:user_id>', methods=['PUT'])
 def update_user_name(user_id):
+    data = request.get_json()
+    new_name = data['name']
     user = Users.query.get(user_id)
     if not user:
         return jsonify({'message': 'User not found'}), 404
 
-    new_name = request.json.get('name')
+    # new_name = request.json.get('name')
     if not new_name:
         return jsonify({'message': 'Missing name parameter'}), 400
 
